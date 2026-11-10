@@ -734,3 +734,24 @@ html.case-open { overflow: hidden; scrollbar-gutter: stable; }
   .case-dialog__heading h2 { font-size: 48px; }
   .case-dialog__heading > p:last-child { font-size: 18px; }
 }
+
+/* Both case galleries share controls and keep their square media frame. */
+.case-container .case-gallery {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  margin: 32px 0 40px;
+}
+.case-container .case-gallery .slides { position: absolute; inset: 0; height: 100%; }
+.case-container .case-gallery .slide {
+  height: 100%;
+  margin: 0;
+  border-radius: 0;
+}
+.case-container .case-gallery .slider__btn img {
+  width: 12px;
+  height: 12px;
+  margin: 0 auto;
+  border-radius: 0;
+}

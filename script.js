@@ -9,7 +9,7 @@ if (clock) {
 }
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-document.querySelectorAll(".slider").forEach((slider) => {
+function initializeSlider(slider) {
   const slides = slider.querySelector(".slides");
   const items = slider.querySelectorAll(".slide");
   const dots = slider.querySelectorAll(".dot");
@@ -22,7 +22,7 @@ document.querySelectorAll(".slider").forEach((slider) => {
   let visible = false;
   let hovered = false;
   slider.setAttribute("role", "region");
-  slider.setAttribute("aria-label", slider.closest("section").querySelector("h2")?.textContent || "Галерея");
+  if (!slider.hasAttribute("aria-label")) slider.setAttribute("aria-label", slider.closest("section")?.querySelector("h2")?.textContent || "Галерея");
   next.setAttribute("aria-label", "Следующий слайд");
   prev.setAttribute("aria-label", "Предыдущий слайд");
   dots.forEach((dot, index) => dot.setAttribute("aria-label", `Слайд ${index + 1}`));
@@ -64,7 +64,8 @@ document.querySelectorAll(".slider").forEach((slider) => {
   }, { threshold: 0.1 });
   // Do not eagerly request images in galleries below the viewport.
   observer.observe(slider);
-});
+}
+document.querySelectorAll(".slider").forEach(initializeSlider);
 
 // Start the film only when visible; keep sound off until explicitly enabled.
 document.querySelectorAll('.case-video-frame').forEach((frame) => {
@@ -132,11 +133,12 @@ if (caseDialog && caseTrigger && typeof caseDialog.showModal === 'function') {
       if (!content) throw new Error('Case content missing');
       // The draft case references artwork absent from the repository.
       // Do not show broken images or empty illustration headings in the popup.
-      content.querySelectorAll('img').forEach(img => {
+      content.querySelectorAll('img[src^="images/"]').forEach(img => {
         if (img.previousElementSibling?.matches('h3')) img.previousElementSibling.remove();
         img.remove();
       });
       body.replaceChildren(content);
+      content.querySelectorAll(".slider").forEach(initializeSlider);
       loaded = true;
     } catch {
       body.textContent = 'Не удалось загрузить кейс.';
