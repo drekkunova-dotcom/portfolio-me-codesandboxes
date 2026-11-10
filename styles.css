@@ -607,3 +607,24 @@ section[id] { scroll-margin-top: 90px; }
   html { scroll-behavior: auto; }
   .slides, .slide { transition: none; }
 }
+
+/* Keep the Lingualeo film in the same square frame as the galleries. */
+.case-video {
+  display: block;
+  width: 640px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 24px;
+  background: #f8eae2;
+  margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+  .case-video {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 20px;
+    margin-bottom: 32px;
+  }
+}
