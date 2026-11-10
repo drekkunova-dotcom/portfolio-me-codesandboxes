@@ -752,8 +752,8 @@ html.case-open { overflow: hidden; scrollbar-gutter: stable; }
 .case-dialog__heading > p:last-child { font-size: 20px; line-height: 1.5; }
 .case-dialog__body { margin-top: 40px; }
 .case-dialog .case-container { width: 100%; }
-.case-dialog .case-container h3 { margin-top: 40px; font-size: 26px; }
-.case-dialog .case-container h4 { font-size: 20px; }
+.case-dialog .case-container h3 { margin-top: 40px; }
+
 .case-dialog .case-container p, .case-dialog .case-container li { font-size: 16px; line-height: 1.7; }
 .case-dialog__retry { margin-top: 16px; padding: 12px 20px; border: 0; border-radius: 24px; background: #eee; color: #111; font: inherit; cursor: pointer; }
 .case-dialog__retry:hover { background: #ddd; }

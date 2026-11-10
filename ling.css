@@ -7,20 +7,24 @@
   margin: 0 auto;
 }
 
-.case-container h3 {
-  font-family: "Inter", sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  margin: 72px 0 24px;
-  color: #111;
+.case-container h3,
+.case-container h4 {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #9b9b9b;
+  margin: 56px 0 24px;
 }
 
-.case-container h4 {
-  font-family: "Inter", sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  margin: 56px 0 18px;
-  color: #111;
+@media (max-width: 768px) {
+  .case-container h3,
+  .case-container h4 {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+  }
 }
 
 .case-container p,
