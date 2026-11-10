@@ -618,23 +618,15 @@ section[id] { scroll-margin-top: 90px; }
   .slides, .slide { transition: none; }
 }
 
-/* Keep the Lingualeo film in the same square frame as the galleries. */
+/* Share the gallery frame so film and slides always have matching geometry. */
+.case-video-frame {
+  flex: 0 0 auto;
+}
 .case-video {
   display: block;
-  width: 640px;
+  width: 100%;
+  height: 100%;
   max-width: 100%;
-  height: auto;
-  aspect-ratio: 1;
+  max-height: 100%;
   object-fit: contain;
-  border-radius: 24px;
-  background: #f8eae2;
-  margin-bottom: 40px;
-}
-@media (max-width: 768px) {
-  .case-video {
-    width: 100%;
-    max-width: 340px;
-    border-radius: 20px;
-    margin-bottom: 32px;
-  }
 }
