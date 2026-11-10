@@ -267,7 +267,7 @@ body {
 
 .ui-design__title {
   font-family: "Instrument Serif", serif;
-  font-size: 48px;
+  font-size: 64px;
   font-weight: 400;
 
   margin-bottom: 16px;
@@ -361,7 +361,6 @@ body {
 
 .slide {
   transition: transform 0.3s ease;
-  cursor: pointer;
   flex: 0 0 100%;
   width: 100%;
   height: 100%;
@@ -452,17 +451,6 @@ body {
     margin-bottom: 32px;
   }
 
-  .slides {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    transition: transform 1.5s ease;
-  }
-
-  .slide {
-    object-fit: contain;
-  }
-
   .slider__btn {
     width: 32px;
     height: 32px;
@@ -486,8 +474,8 @@ body {
   }
 
   .slider__btn img {
-    width: 18px;
-    height: 18px;
+    width: 12px;
+    height: 12px;
     display: block;
   }
 
@@ -499,10 +487,6 @@ body {
   .dot {
     width: 6px;
     height: 6px;
-  }
-  .slider__btn img {
-    width: 12px;
-    height: 12px;
   }
 }
 .mobile-br {
@@ -557,17 +541,6 @@ body {
   transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.ui-design__title::after {
-  content: "→";
-  position: absolute;
-  top: 50%;
-  right: -78px;
-
-  transform: translateY(-50%) translateX(-8px);
-  opacity: 0;
-
-  transition: 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
 
 .project-link .ui-design__title {
   transition: opacity 0.3s ease;
@@ -579,11 +552,6 @@ body {
 html {
   scroll-behavior: smooth;
 }
-.hero__link a {
-  color: inherit;
-  text-decoration: none;
-}
-
 .hero__link a:visited {
   color: inherit;
 }
@@ -628,4 +596,14 @@ html {
   font-weight: 400;
 
   margin-bottom: 16px;
+}
+
+/* Keyboard controls and stable media geometry. */
+.dot { border: 0; padding: 0; }
+:focus-visible { outline: 2px solid #111; outline-offset: 4px; }
+section[id] { scroll-margin-top: 90px; }
+.case-cover { display: block; width: min(100%, 1280px); height: auto; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .slides, .slide { transition: none; }
 }

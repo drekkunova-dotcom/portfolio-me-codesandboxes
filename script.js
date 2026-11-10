@@ -1,165 +1,67 @@
-// ======================================
-// Часы
-// ======================================
-
 const clock = document.getElementById("clock");
-
 if (clock) {
-  function updateClock() {
-    const now = new Date();
-
-    clock.textContent = now.toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-  }
-
+  const formatter = new Intl.DateTimeFormat("ru-RU", {
+    timeZone: "Europe/Volgograd", hour: "2-digit", minute: "2-digit", second: "2-digit",
+  });
+  const updateClock = () => { clock.textContent = formatter.format(new Date()); };
   updateClock();
-  setInterval(updateClock, 1000);
+  setInterval(() => { if (!document.hidden) updateClock(); }, 1000);
 }
 
-// ======================================
-// Слайдер
-// ======================================
-
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 document.querySelectorAll(".slider").forEach((slider) => {
   const slides = slider.querySelector(".slides");
-  const slideItems = slider.querySelectorAll(".slide");
+  const items = slider.querySelectorAll(".slide");
   const dots = slider.querySelectorAll(".dot");
   const next = slider.querySelector(".slider__btn--next");
   const prev = slider.querySelector(".slider__btn--prev");
-
-  if (!slides || !next || !prev) return;
+  if (!slides || !items.length || !next || !prev) return;
 
   let current = 0;
   let interval;
-
-  const totalSlides = slideItems.length;
-  const AUTO_PLAY_DELAY = 4000;
+  let visible = false;
+  let hovered = false;
+  slider.setAttribute("role", "region");
+  slider.setAttribute("aria-label", slider.closest("section").querySelector("h2")?.textContent || "Галерея");
+  next.setAttribute("aria-label", "Следующий слайд");
+  prev.setAttribute("aria-label", "Предыдущий слайд");
+  dots.forEach((dot, index) => dot.setAttribute("aria-label", `Слайд ${index + 1}`));
 
   function updateSlider() {
     slides.style.transform = `translateX(-${current * 100}%)`;
-
-    dots.forEach((dot) => dot.classList.remove("active"));
-
-    if (dots[current]) {
-      dots[current].classList.add("active");
-    }
+    // Load the selected image even when the user jumps to a distant slide.
+    items[current].loading = "eager";
+    dots.forEach((dot, index) => {
+      dot.classList.toggle("active", index === current);
+      dot.setAttribute("aria-pressed", String(index === current));
+    });
   }
-
-  function nextSlide() {
-    current = (current + 1) % totalSlides;
-    updateSlider();
-  }
-
-  function prevSlide() {
-    current = (current - 1 + totalSlides) % totalSlides;
-    updateSlider();
-  }
-
-  function stopAutoplay() {
+  function syncAutoplay() {
     clearInterval(interval);
-  }
-
-  function startAutoplay() {
-    stopAutoplay();
-    interval = setInterval(nextSlide, AUTO_PLAY_DELAY);
-  }
-
-  next.addEventListener("click", () => {
-    nextSlide();
-    startAutoplay();
-  });
-
-  prev.addEventListener("click", () => {
-    prevSlide();
-    startAutoplay();
-  });
-
-  dots.forEach((dot, index) => {
-    dot.addEventListener("click", () => {
-      current = index;
-
-      updateSlider();
-
-      startAutoplay();
-    });
-  });
-
-  if (!window.matchMedia("(pointer: coarse)").matches) {
-    slider.addEventListener("mouseenter", stopAutoplay);
-
-    slider.addEventListener("mouseleave", startAutoplay);
-  }
-
-  updateSlider();
-
-  startAutoplay();
-});
-
-// ======================================
-// Курсор "Изучить кейс"
-// ======================================
-
-const project = document.getElementById("ling-case");
-
-if (project) {
-
-    const cursorLabel = document.createElement("div");
-
-    cursorLabel.className = "cursor-label";
-    cursorLabel.textContent = "Изучить кейс";
-
-    document.body.appendChild(cursorLabel);
-
-    let mouseX = 0;
-    let mouseY = 0;
-
-    let x = 0;
-    let y = 0;
-
-    let isHover = false;
-
-    function animateCursor() {
-
-        if (isHover) {
-
-            x += (mouseX - x) * 0.18;
-            y += (mouseY - y) * 0.18;
-
-            cursorLabel.style.left = x + "px";
-            cursorLabel.style.top = y + "px";
-        }
-
-        requestAnimationFrame(animateCursor);
+    if (visible && !document.hidden && !reducedMotion.matches && !hovered && !slider.contains(document.activeElement)) {
+      interval = setInterval(() => move(1), 4000);
     }
-
-    animateCursor();
-
-    project.addEventListener("mouseenter", (e) => {
-
-        isHover = true;
-
-        mouseX = x = e.clientX;
-        mouseY = y = e.clientY;
-
-        cursorLabel.classList.add("active");
-
-    });
-
-    project.addEventListener("mousemove", (e) => {
-
-        mouseX = e.clientX + 24;
-        mouseY = e.clientY + 24;
-
-    });
-
-    project.addEventListener("mouseleave", () => {
-
-        isHover = false;
-        cursorLabel.classList.remove("active");
-
-    });
-
-}
+  }
+  function move(direction) {
+    current = (current + direction + items.length) % items.length;
+    updateSlider();
+  }
+  next.addEventListener("click", () => { move(1); syncAutoplay(); });
+  prev.addEventListener("click", () => { move(-1); syncAutoplay(); });
+  dots.forEach((dot, index) => dot.addEventListener("click", () => {
+    current = index; updateSlider(); syncAutoplay();
+  }));
+  slider.addEventListener("mouseenter", () => { hovered = true; syncAutoplay(); });
+  slider.addEventListener("mouseleave", () => { hovered = false; syncAutoplay(); });
+  slider.addEventListener("focusin", syncAutoplay);
+  slider.addEventListener("focusout", () => requestAnimationFrame(syncAutoplay));
+  document.addEventListener("visibilitychange", syncAutoplay);
+  reducedMotion.addEventListener("change", syncAutoplay);
+  const observer = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    if (visible) updateSlider();
+    syncAutoplay();
+  }, { threshold: 0.1 });
+  // Do not eagerly request images in galleries below the viewport.
+  observer.observe(slider);
+});
