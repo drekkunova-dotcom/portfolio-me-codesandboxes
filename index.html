@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Daria Rekunova — UX/UI Designer</title>
     <link rel="icon" type="image/svg+xml" href="imahes/ico.svg" />
-    <link rel="stylesheet" href="styles.css?v=20261111-video-frame" />
+    <link rel="stylesheet" href="styles.css?v=20261111-player" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -45,7 +45,7 @@
 <!-- /Yandex.Metrika counter -->
     <section class="hero">
       <div class="hero__content">
-        <img class="hero__avatar" width="200" height="200" fetchpriority="high" src="imahes/daria-portrait.webp" alt="Daria Rekunova" />
+        <img class="hero__avatar" width="200" height="200" fetchpriority="high" src="imahes/daria-original.webp" alt="Daria Rekunova" />
 
         <h1 class="hero__title">i'm Daria Rekunova</h1>
 
@@ -81,6 +81,7 @@
       <video
         class="case-video"
         controls
+        muted
         playsinline
         preload="none"
         poster="imahes/lingualeo-poster.webp"
@@ -92,6 +93,13 @@
         Ваш браузер не поддерживает видео.
         <a href="videos/lingualeo.mp4">Скачать видео Lingualeo</a>
       </video>
+      <div class="video-controls" hidden>
+        <button class="video-toggle" type="button" aria-label="Воспроизвести видео"><span aria-hidden="true"></span></button>
+        <input class="video-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Позиция видео" disabled />
+        <span class="video-time" aria-hidden="true">0:00</span>
+        <button class="video-sound" type="button" aria-label="Включить звук" aria-pressed="false">Звук выкл.</button>
+      </div>
+      <p class="video-status" role="status" hidden></p>
       </div>
 
       <h2 class="ui-design__title">lingualeo</h2>
@@ -297,6 +305,6 @@
       </div>
     </section>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20261111-player"></script>
   </body>
 </html>

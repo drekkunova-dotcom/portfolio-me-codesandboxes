@@ -65,3 +65,51 @@ document.querySelectorAll(".slider").forEach((slider) => {
   // Do not eagerly request images in galleries below the viewport.
   observer.observe(slider);
 });
+
+// Keep native controls as a fallback until the custom player is initialized.
+document.querySelectorAll('.case-video-frame').forEach((frame) => {
+  const video = frame.querySelector('video');
+  const controls = frame.querySelector('.video-controls');
+  const toggle = frame.querySelector('.video-toggle');
+  const sound = frame.querySelector('.video-sound');
+  const progress = frame.querySelector('.video-progress');
+  const time = frame.querySelector('.video-time');
+  const status = frame.querySelector('.video-status');
+  if (!video || !controls || !toggle || !sound || !progress || !time || !status) return;
+  video.muted = true;
+  function sync() {
+    toggle.setAttribute('aria-label', video.paused ? 'Воспроизвести видео' : 'Приостановить видео');
+    toggle.classList.toggle('is-playing', !video.paused);
+    sound.textContent = video.muted ? 'Звук выкл.' : 'Звук вкл.';
+    sound.setAttribute('aria-label', video.muted ? 'Включить звук' : 'Выключить звук');
+    sound.setAttribute('aria-pressed', String(!video.muted));
+    const duration = Number.isFinite(video.duration) ? video.duration : 0;
+    progress.disabled = !duration;
+    progress.value = duration ? video.currentTime / duration * 100 : 0;
+    const seconds = Math.floor(video.currentTime);
+    time.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+    progress.setAttribute('aria-valuetext', `${time.textContent} из ${Math.floor(duration / 60)}:${String(Math.floor(duration % 60)).padStart(2, '0')}`);
+  }
+  function showError() {
+    status.textContent = 'Не удалось воспроизвести видео. Попробуйте ещё раз или обновите страницу.';
+    status.hidden = false;
+    sync();
+  }
+  toggle.addEventListener('click', async () => {
+    if (!video.paused) { video.pause(); return; }
+    status.hidden = true;
+    if (video.error) video.load();
+    try { await video.play(); } catch (error) { if (error.name !== "AbortError") showError(); }
+  });
+  sound.addEventListener('click', () => { video.muted = !video.muted; });
+  progress.addEventListener('input', () => {
+    if (Number.isFinite(video.duration)) video.currentTime = Number(progress.value) / 100 * video.duration;
+  });
+  ['play', 'pause', 'ended', 'timeupdate', 'loadedmetadata', 'volumechange', 'durationchange'].forEach(event => video.addEventListener(event, sync));
+  video.addEventListener('error', showError);
+  video.querySelectorAll('source').forEach(source => source.addEventListener('error', showError));
+  document.addEventListener('visibilitychange', () => { if (document.hidden) video.pause(); });
+  sync();
+  controls.hidden = false;
+  video.controls = false;
+});
