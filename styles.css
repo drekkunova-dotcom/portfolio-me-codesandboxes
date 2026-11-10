@@ -695,13 +695,34 @@ html.case-open { overflow: hidden; scrollbar-gutter: stable; }
 .case-dialog__card {
   width: 100%;
   height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable;
+  overflow: hidden;
   background: #fff;
   border-radius: 24px;
-  padding: 56px 48px;
+  padding: 12px 8px;
   font-family: Inter, sans-serif;
+}
+.case-dialog__scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #c7c7c7 transparent;
+  padding: 44px 40px;
+}
+.case-dialog__scroll:focus-visible { outline-offset: -2px; border-radius: 12px; }
+.case-dialog__scroll::-webkit-scrollbar { width: 6px; }
+.case-dialog__scroll::-webkit-scrollbar-track { background: transparent; }
+.case-dialog__scroll::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 999px; }
+.case-dialog__scroll::-webkit-scrollbar-thumb:hover { background: #aaa; }
+.case-dialog__scroll::-webkit-scrollbar-thumb:active { background: #888; }
+.case-dialog__scroll::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+@supports selector(::-webkit-scrollbar) {
+  .case-dialog__scroll { scrollbar-width: auto; }
+}
+@media (forced-colors: active) {
+  .case-dialog__scroll { scrollbar-color: auto; scrollbar-width: auto; }
 }
 .case-dialog__close {
   position: absolute;
@@ -730,7 +751,8 @@ html.case-open { overflow: hidden; scrollbar-gutter: stable; }
 .case-dialog__retry:hover { background: #ddd; }
 @media (max-width: 600px) {
   .case-dialog { width: calc(100% - 24px); height: calc(100dvh - 32px); padding: 52px 0 0; }
-  .case-dialog__card { padding: 32px 24px; border-radius: 20px; }
+  .case-dialog__card { padding: 12px 8px; border-radius: 20px; }
+  .case-dialog__scroll { padding: 20px 16px; }
   .case-dialog__heading h2 { font-size: 48px; }
   .case-dialog__heading > p:last-child { font-size: 18px; }
 }
