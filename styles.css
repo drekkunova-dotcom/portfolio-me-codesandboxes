@@ -672,3 +672,65 @@ section[id] { scroll-margin-top: 90px; }
 @media (max-width: 768px) {
   .video-sound:not([hidden]) { right: 12px; bottom: 12px; }
 }
+
+.case-trigger { color: inherit; text-decoration: none; cursor: pointer; }
+.case-trigger:hover { opacity: .6; }
+.case-trigger:active { opacity: .4; }
+html.case-open { overflow: hidden; scrollbar-gutter: stable; }
+.case-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(900px, calc(100% - 32px));
+  max-width: none;
+  height: min(900px, calc(100dvh - 80px));
+  max-height: none;
+  padding: 0 50px;
+  border: 0;
+  background: transparent;
+  color: #111;
+  overflow: visible;
+}
+.case-dialog::backdrop { background: rgba(17,17,17,.5); backdrop-filter: blur(4px); }
+.case-dialog__card {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  background: #fff;
+  border-radius: 24px;
+  padding: 56px 48px;
+  font-family: Inter, sans-serif;
+}
+.case-dialog__close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+.case-dialog__close:hover { background: #e9e9e9; }
+.case-dialog__close:active { background: #ddd; }
+.case-dialog__heading h2 { font: 400 64px/1 "Instrument Serif", serif; margin-bottom: 24px; }
+.case-dialog__heading > p:last-child { font-size: 20px; line-height: 1.5; }
+.case-dialog__body { margin-top: 40px; }
+.case-dialog .case-container { width: 100%; }
+.case-dialog .case-container h3 { margin-top: 40px; font-size: 26px; }
+.case-dialog .case-container h4 { font-size: 20px; }
+.case-dialog .case-container p, .case-dialog .case-container li { font-size: 16px; line-height: 1.7; }
+.case-dialog__retry { margin-top: 16px; padding: 12px 20px; border: 0; border-radius: 24px; background: #eee; color: #111; font: inherit; cursor: pointer; }
+.case-dialog__retry:hover { background: #ddd; }
+@media (max-width: 600px) {
+  .case-dialog { width: calc(100% - 24px); height: calc(100dvh - 32px); padding: 52px 0 0; }
+  .case-dialog__card { padding: 32px 24px; border-radius: 20px; }
+  .case-dialog__heading h2 { font-size: 48px; }
+  .case-dialog__heading > p:last-child { font-size: 18px; }
+}

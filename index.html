@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Daria Rekunova — UX/UI Designer</title>
     <link rel="icon" type="image/svg+xml" href="imahes/ico.svg" />
-    <link rel="stylesheet" href="styles.css?v=20261111-sound-corner" />
+    <link rel="stylesheet" href="styles.css?v=20261111-case-dialog" />
+    <link rel="stylesheet" href="ling.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -104,7 +105,7 @@
       <p class="video-status" role="status" hidden></p>
       </div>
 
-      <h2 class="ui-design__title">lingualeo</h2>
+      <h2 class="ui-design__title"><a class="case-trigger" href="ling.html" aria-haspopup="dialog" aria-controls="lingualeo-dialog">lingualeo</a></h2>
 
       <p class="hero__link">
         концепт редизайна грамматических тренировок для повышения вовлеченности
@@ -307,6 +308,19 @@
       </div>
     </section>
 
-    <script src="script.js?v=20261111-sound-corner"></script>
+    <dialog class="case-dialog" id="lingualeo-dialog" aria-labelledby="case-dialog-title">
+      <button class="case-dialog__close" type="button" aria-label="Закрыть кейс" autofocus>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+      </button>
+      <article class="case-dialog__card">
+        <header class="case-dialog__heading">
+          <p class="hero__subtitle">UX/UI CASE · 2026</p>
+          <h2 id="case-dialog-title">Lingualeo</h2>
+          <p>Концепт редизайна грамматических тренировок</p>
+        </header>
+        <div class="case-dialog__body" aria-live="polite"></div>
+      </article>
+    </dialog>
+    <script src="script.js?v=20261111-case-dialog"></script>
   </body>
 </html>

@@ -111,3 +111,63 @@ document.querySelectorAll('.case-video-frame').forEach((frame) => {
   video.controls = false;
   observer.observe(frame);
 });
+
+const caseDialog = document.getElementById('lingualeo-dialog');
+const caseTrigger = document.querySelector('.case-trigger');
+if (caseDialog && caseTrigger && typeof caseDialog.showModal === 'function') {
+  const body = caseDialog.querySelector('.case-dialog__body');
+  const close = caseDialog.querySelector('.case-dialog__close');
+  let loaded = false;
+  let loading = false;
+  async function loadCase() {
+    if (loaded || loading) return;
+    loading = true;
+    body.setAttribute('aria-busy', 'true');
+    body.textContent = 'Загрузка кейса…';
+    try {
+      const response = await fetch(caseTrigger.getAttribute('href'));
+      if (!response.ok) throw new Error('Case unavailable');
+      const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const content = page.querySelector('.case-container');
+      if (!content) throw new Error('Case content missing');
+      // The draft case references artwork absent from the repository.
+      // Do not show broken images or empty illustration headings in the popup.
+      content.querySelectorAll('img').forEach(img => {
+        if (img.previousElementSibling?.matches('h3')) img.previousElementSibling.remove();
+        img.remove();
+      });
+      body.replaceChildren(content);
+      loaded = true;
+    } catch {
+      body.textContent = 'Не удалось загрузить кейс.';
+      const retry = document.createElement('button');
+      retry.type = 'button';
+      retry.className = 'case-dialog__retry';
+      retry.textContent = 'Попробовать снова';
+      retry.addEventListener('click', loadCase);
+      body.append(document.createElement('br'), retry);
+    } finally {
+      loading = false;
+      body.removeAttribute('aria-busy');
+    }
+  }
+  caseTrigger.addEventListener('click', event => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button) return;
+    event.preventDefault();
+    caseDialog.showModal();
+    document.documentElement.classList.add('case-open');
+    document.querySelectorAll('video').forEach(video => video.pause());
+    loadCase();
+  });
+  close.addEventListener('click', () => caseDialog.close());
+  let outsideDown = false;
+  caseDialog.addEventListener('pointerdown', event => { outsideDown = event.target === caseDialog; });
+  caseDialog.addEventListener('click', event => {
+    if (outsideDown && event.target === caseDialog) caseDialog.close();
+    outsideDown = false;
+  });
+  caseDialog.addEventListener('close', () => {
+    document.documentElement.classList.remove('case-open');
+    caseTrigger.focus({ preventScroll: true });
+  });
+}
