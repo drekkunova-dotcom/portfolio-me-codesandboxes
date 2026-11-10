@@ -126,7 +126,9 @@ if (caseDialog && caseTrigger && typeof caseDialog.showModal === 'function') {
     body.setAttribute('aria-busy', 'true');
     body.textContent = 'Загрузка кейса…';
     try {
-      const response = await fetch(caseTrigger.getAttribute('href'));
+      const caseUrl = new URL(caseTrigger.getAttribute('href'), document.baseURI);
+      caseUrl.searchParams.set('v', '20261111-galleries-scroll');
+      const response = await fetch(caseUrl, { cache: 'no-store' });
       if (!response.ok) throw new Error('Case unavailable');
       const page = new DOMParser().parseFromString(await response.text(), 'text/html');
       const content = page.querySelector('.case-container');

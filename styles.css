@@ -717,9 +717,17 @@ html.case-open { overflow: hidden; scrollbar-gutter: stable; }
 .case-dialog__scroll::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 999px; }
 .case-dialog__scroll::-webkit-scrollbar-thumb:hover { background: #aaa; }
 .case-dialog__scroll::-webkit-scrollbar-thumb:active { background: #888; }
-.case-dialog__scroll::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+.case-dialog__scroll::-webkit-scrollbar-button,
+.case-dialog__scroll::-webkit-scrollbar-button:single-button,
+.case-dialog__scroll::-webkit-scrollbar-button:vertical:decrement,
+.case-dialog__scroll::-webkit-scrollbar-button:vertical:increment {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
 @supports selector(::-webkit-scrollbar) {
-  .case-dialog__scroll { scrollbar-width: auto; }
+  .case-dialog__scroll { scrollbar-width: auto; scrollbar-color: auto; }
 }
 @media (forced-colors: active) {
   .case-dialog__scroll { scrollbar-color: auto; scrollbar-width: auto; }
