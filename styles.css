@@ -635,48 +635,29 @@ section[id] { scroll-margin-top: 90px; }
   object-fit: contain;
 }
 
-/* Quiet, keyboard-accessible film controls, without a browser gradient. */
-.video-controls:not([hidden]) {
+
+/* One quiet sound control, kept clear of the film content. */
+.video-sound:not([hidden]) {
   position: absolute;
-  left: 20px;
   right: 20px;
   bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, .7);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .88);
-  backdrop-filter: blur(12px);
-  color: #333;
-  font: 12px Inter, sans-serif;
-}
-.video-controls button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   appearance: none;
   border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  min-height: 44px;
-  padding: 0 10px;
-  font: inherit;
-  white-space: nowrap;
-}
-.video-controls button:hover { background: #e5e5e5; }
-.video-controls button:active { background: #d6d6d6; }
-.video-toggle { min-width: 44px; }
-.video-time { font-variant-numeric: tabular-nums; min-width: 28px; }
-.video-progress {
-  flex: 1;
-  min-width: 0;
-  width: 100%;
-  height: 44px;
-  accent-color: #555;
+  border-radius: 50%;
+  background: rgba(255,255,255,.88);
+  color: #555;
   cursor: pointer;
 }
-.video-progress:disabled { cursor: default; opacity: .45; }
+.video-sound:hover { background: #fff; color: #111; }
+.video-sound:active { background: #ddd; }
+.video-sound .sound-on { display: none; }
+.video-sound[aria-pressed="true"] .sound-on { display: block; }
+.video-sound[aria-pressed="true"] .sound-off { display: none; }
 .video-status:not([hidden]) {
   position: absolute;
   top: 16px;
@@ -689,23 +670,5 @@ section[id] { scroll-margin-top: 90px; }
   font: 14px/1.4 Inter, sans-serif;
 }
 @media (max-width: 768px) {
-  .video-controls:not([hidden]) { left: 10px; right: 10px; bottom: 10px; gap: 4px; padding: 2px 4px; }
-  .video-controls button { padding: 0 8px; }
-}
-
-.video-toggle span {
-  display: block;
-  width: 0;
-  height: 0;
-  margin: auto;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-left: 8px solid currentColor;
-}
-.video-toggle.is-playing span {
-  width: 8px;
-  height: 10px;
-  border: 0;
-  border-left: 3px solid currentColor;
-  border-right: 3px solid currentColor;
+  .video-sound:not([hidden]) { right: 12px; bottom: 12px; }
 }
